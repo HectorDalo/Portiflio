@@ -1,0 +1,377 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior:smooth;
+}
+
+body {
+    background-color: #050505;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    min-height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    border-bottom: 1px solid #00eaff;
+    position: sticky;
+    top: 0;
+    background-color: rgba(5, 5, 5, 0.95);
+    z-index: 1000;
+}
+
+header h1 {
+    color: #00eaff;
+    font-size: 28px;
+    text-shadow: 0 0 10px #00eaff;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+nav a:hover {
+    color: #00eaff;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #00eaff;
+    left: 0;
+    bottom: 0;
+    transition: 0.3s;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+#inicio {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+#inicio h2 {
+    font-size: 56px;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+#inicio h2.destaque {
+    color: #00eaff;
+}
+
+#inicio p {
+    font-size: 20px;
+    color: #bdbdbd;
+    max-width: 700px;
+    margin-bottom: 35px;
+}
+
+.btn {
+    padding: 14px 30px;
+    background-color: transparent;
+    color: #00eaff;
+    border: 2px solid #00eaff;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #00eaff;
+    color: #050505;
+    box-shadow: 0 0 20px #00eaff;
+}
+
+#sobre {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+#sobre h2 {
+    font-size: 40px;
+    color: #00eaff;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+#sobre p {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #bdbdbd;
+}
+
+.sobre-container {
+    display:flex;
+    gap:  30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.sobre-card {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #00eaff;
+    border-radius: 10px;
+    padding: 25px;
+    width: 45%;
+    box-shadow: 0 0 10px rgba(0,242,255,0.3);
+    transition: 0.3s;
+} 
+
+.sobre-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
+}
+
+.sobre-card h3 {
+    color: #00eaff;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.sobre-card p {
+    color: #fff;
+    line-height: 1.6;
+    font-size: 16px
+}
+
+
+
+#habilidades {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+#habilidades h2 {
+    font-size: 40px;
+    color: #00eaff;
+    margin-bottom: 40px;
+}
+
+#habilidades ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0;
+}
+
+#habilidades li {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px 25px;
+    border: 1px solid #00eaff;
+    border-radius: 8px;
+    color: #ffffff;
+    transition: 0.3s;
+}
+
+#habilidades li:hover {
+    background-color: #00eaff;
+    color: #050505;
+    box-shadow: 0 0 15px rgba(0, 234, 255, 0.5);
+    transform: translateY(-5px);
+}
+
+#projetos {
+    padding: 100px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.projetos-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+#projetos h2 {
+    font-size: 40px;
+    color: #00eaff;
+    margin-bottom: 25px;
+}
+
+#projetos p {
+    font-size: 18px;
+    color: #bdbdbd;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.projeto {
+    width: 400px;
+    min-height: 300px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #00eaff;
+    border-radius: 10px;
+    background-color: #0a0a0a0a;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+} 
+
+
+.projeto h3 {
+    font-size: 26px;
+    color: #00eaff;
+    margin-bottom: 15px;
+}
+
+.projeto p {
+    font-size: 17px;
+    color: #bdbdbd;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.projeto span {
+    font-size: 14px;
+    color: #00eaff;
+    letter-spacing: 1px;
+}
+
+.btn-projeto {
+    display: block;
+    width: fit-content;
+    margin: auto auto 0;
+    align-self: center;
+    padding: 10px 20px;
+    border: 1px solid #00eaff;
+    border-radius: 6px;
+    color: #00eaff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-projeto:hover {
+    background-color: #00eaff;
+    color: #050505;
+    box-shadow: 0 0 15px #00eaff
+}
+
+.projeto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px #00eaff;
+}
+
+#contato {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+#contato h2 {
+    text-align: center;
+    font-size: 40px;
+    color: #00eaff;
+    margin-bottom: 25px;
+}
+
+#contato p {
+    font-size: 18px;
+    color: #bdbdbd;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    line-height: 1.7;
+
+}
+
+footer {
+    padding: 30px 20px;
+    text-align: center;
+    border-top: 1px solid #00eaff;
+    color: #777777;
+    font-size: 14px;
+    background-color: #020202;
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        width: 100%;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #inicio h2 {
+        font-size: 40px;
+    }
+
+    #inicio p {
+        font-size: 17px;
+    }
+
+    #sobre h2,
+    #habilidades h2,
+    #projetos h2,
+    #contato h2 {
+        font-size: 32px;
+    }
+
+    #habilidades ul {
+        gap: 15px;
+    }
+
+    #habilidades li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .projeto {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 15px;
+    }
+
+    .projetos-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sobre-card{
+        width: 100%;
+    }
+
+
+}
