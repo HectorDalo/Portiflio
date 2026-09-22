@@ -325,9 +325,13 @@ footer {
 
     nav {
         width: 100%;
-        gap: 12px;
-        flex-wrap: nowrap;
+        gap: 8px;
         justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    nav a {
+        font-size: 13px;
     }
 
     #inicio h2 {
