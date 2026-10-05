@@ -240,6 +240,7 @@ nav a:hover::after {
     transition: 0.3s;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
 } 
 
@@ -266,7 +267,7 @@ nav a:hover::after {
 .btn-projeto {
     display: block;
     width: fit-content;
-    margin: auto auto 0;
+    margin: 15px auto 0;
     align-self: center;
     padding: 10px 20px;
     border: 1px solid #00eaff;
