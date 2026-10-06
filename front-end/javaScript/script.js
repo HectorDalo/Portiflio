@@ -21,7 +21,7 @@ const projetos = [
     {
         nome: "Portfólio Pessoal",
 
-        descricao: "Projeto desenvolvido para apresentar minhas habilidades, conhecimentos e evolução na área de tecnologia.",
+        descricao: "Site desenvolvido para apresentar minha trajetória, habilidades, projetos e evolução na área de tecnologia.",
 
         tecnologias: "HTML • CSS • JavaScript",
 
