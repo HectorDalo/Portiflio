@@ -73,8 +73,8 @@ const simbolos = document.querySelectorAll(".simbolo");
 const textosRolagem = [
     "Hector Dalonso",
     "Desenvolvedor em formação",
-    "Foco em Python",
-    "Desenvolvimento Back-end"
+    "Foco em Programação",
+    "Desenvolvimento de Sistemas"
 ];
 
 let indiceRolagem = 0;
