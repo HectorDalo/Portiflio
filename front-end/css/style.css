@@ -80,7 +80,33 @@ nav a:hover::after {
     font-size: 56px;
     margin-bottom: 20px;
     color: #ffffff;
+    height: 67px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.6s ease, opacity 0.6s ease;
 }
+
+@keyframes carregando {
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 5px #00eaff;
+    }
+
+    50% {
+        opacity: 0.35;
+        text-shadow: 0 0 15px #00eaff;
+    }
+}
+
+.simbolo {
+    color: #00eaff;
+    display: inline-block;
+}
+
+.simbolo.carregando {
+    animation: carregando 0.8s ease-in-out;
+}
+
 
 #inicio h2.destaque {
     color: #00eaff;
@@ -339,7 +365,8 @@ footer {
     }
 
     #inicio h2 {
-        font-size: 40px;
+        font-size: 30px;
+        white-space: nowrap;
     }
 
     #inicio p {
