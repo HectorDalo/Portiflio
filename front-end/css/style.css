@@ -365,7 +365,7 @@ footer {
     }
 
     #inicio h2 {
-        font-size: 30px;
+        font-size: clamp(26px, 5vw, 56px);
         white-space: nowrap;
     }
 
