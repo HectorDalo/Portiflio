@@ -361,9 +361,18 @@ footer {
     background-color: #020202;
 }
 
+#sobre h2,
+#habilidades h2,
+#projetos h2,
+#contato h2 {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 12px;
+}
+
 #sobre h2::after,
 #habilidades h2::after,
-#projeto h2::after,
+#projetos h2::after,
 #contato h2::after {
     content: "";
     position: absolute;
