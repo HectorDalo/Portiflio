@@ -385,6 +385,80 @@ footer {
     box-shadow: 0 0 8px #00eaff;
 }
 
+#terminal {
+    padding: 100px 20px;
+    text-align: center;
+}
+
+#terminal h2 {
+    font-size: 40px;
+    color: #00eaff;
+    margin-bottom: 25px;
+    text-shadow: 0 0 8px rgba(0, 234, 255, 0.45);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 12px;
+}
+
+#terminal h2::after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 2px;
+    background-color: #00eaff;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    box-shadow: 0 0 8px #00eaff;
+}
+
+.terminal {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(10, 15, 18, 0.92);
+    border: 1px solid #00eaff;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: left;
+    box-shadow: 0 0 15px rgba(0, 234, 255, 0.25);
+}
+
+.terminal-topo {
+    padding: 12px 20px;
+    background-color: rgba(0, 234, 255, 0.08);
+    border-bottom: 1px solid rgba(0, 234, 255, 0.3);
+    color: #00eaff;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.terminal-conteudo {
+    padding: 25px;
+    font-family: monospace;
+    font-size: 15px;
+    color: #bdbdbd;
+    line-height: 1.7;
+}
+
+.terminal-linha {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    color: #00eaff;
+}
+
+#terminalInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: monospace;
+    font-size: 15px;
+}
+
 @media (max-width: 900px) {
     header {
         padding: 20px;

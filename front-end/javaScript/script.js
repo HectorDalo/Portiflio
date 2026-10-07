@@ -131,3 +131,126 @@ setInterval(function() {
     }, 600);
 
 }, 2500);
+
+const terminalInput = document.querySelector("#terminalInput");
+const terminalConteudo = document.querySelector(".terminal-conteudo");
+
+terminalInput.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+
+        const comando = terminalInput.value.trim().toLowerCase();
+
+        switch (comando) {
+
+    case "help":
+
+        const resposta = document.createElement("p");
+
+        resposta.innerHTML = `
+            Comandos disponíveis:<br>
+            sobre - informações sobre mim<br>
+            skills - minhas habilidades<br>
+            projetos - meus projetos<br>
+            contato - como entrar em contato
+        `;
+
+        terminalConteudo.appendChild(resposta);
+
+        break;
+
+    case "sobre":
+
+    const respostaSobre = document.createElement("p");
+
+    respostaSobre.innerHTML = `
+        Nome: Hector Dalonso<br>
+        Formação: Ciência da Computação<br>
+        Status: Desenvolvedor em formação<br>
+        Área: Desenvolvimento de sistemas
+    `;
+
+    terminalConteudo.appendChild(respostaSobre);
+
+    break;
+
+    case "skills":
+
+    const respostaSkills = document.createElement("p");
+
+    respostaSkills.innerHTML = `
+        Linguagens:<br>
+        - Python<br>
+        - JavaScript<br><br>
+
+        Web:<br>
+        - HTML<br>
+        - CSS<br><br>
+
+        Conceitos:<br>
+        - Programação Orientada a Objetos
+    `;
+
+    terminalConteudo.appendChild(respostaSkills);
+
+    break;
+
+    case "projetos":
+
+    const respostaProjetos = document.createElement("p");
+
+    respostaProjetos.innerHTML = `
+        [1] Portfólio Pessoal<br>
+        HTML • CSS • JavaScript<br><br>
+
+        [2] Sistema de Cadastro de Clientes<br>
+        Python • Tkinter • JSON
+    `;
+
+    terminalConteudo.appendChild(respostaProjetos);
+
+    break;
+
+    case "projeto 1":
+
+    window.open(projetos[0].link, "_blank");
+
+    break;
+
+    case "projeto 2":
+
+    window.open(projetos[1].link, "_blank");
+
+    break;
+
+    case "contato":
+
+    const respostaContato = document.createElement("p");
+
+    respostaContato.innerHTML = `
+        Contato:<br>
+        WhatsApp: (11) 97993-4334<br>
+        <br>
+        Para entrar em contato, utilize o botão
+        "Entrar em contato" na seção Contato.
+    `;
+
+    terminalConteudo.appendChild(respostaContato);
+
+    break;
+
+    default:
+
+        const respostaErro = document.createElement("p");
+
+        respostaErro.textContent =
+            `Comando não encontrado: ${comando}`;
+
+        terminalConteudo.appendChild(respostaErro);
+
+        break;
+}
+
+        terminalInput.value = "";
+    }
+});
