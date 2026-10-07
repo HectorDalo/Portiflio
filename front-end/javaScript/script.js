@@ -19,7 +19,7 @@ const projetos = [
     {
         nome: "Portfólio Pessoal",
 
-        descricao: "Site desenvolvido para apresentar minha trajetória, habilidades, projetos e evolução na área de tecnologia.",
+        descricao: "Site desenvolvido para apresentar minha formação, habilidades e projetos na área de tecnologia, utilizando HTML, CSS e JavaScript. O projeto também representa minha evolução prática no desenvolvimento web.",
 
         tecnologias: "HTML • CSS • JavaScript",
 
@@ -29,7 +29,7 @@ const projetos = [
     {
         nome: "Sistema de Cadastro de Clientes",
 
-        descricao: "Sistema de cadastro e gerenciamento de clientes desenvolvido em Python, utilizando interface gráfica com Tkinter e armazenamento de dados em JSON.",
+        descricao: "Sistema desenvolvido em Python para cadastro e gerenciamento de clientes, utilizando Tkinter para a interface gráfica e JSON para armazenamento dos dados. O projeto foi desenvolvido com foco na aplicação prática de conceitos de programação e orientação a objetos.",
         
         tecnologias: "Python • Tkinter • JSON",
         
@@ -73,8 +73,7 @@ const simbolos = document.querySelectorAll(".simbolo");
 const textosRolagem = [
     "Hector Dalonso",
     "Dev em formação",
-    "Foco em Programação",
-    "Dev de Sistemas"
+    "Dev de sistemas",
 ];
 
 let indiceRolagem = 0;
