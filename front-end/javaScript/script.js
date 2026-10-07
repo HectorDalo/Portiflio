@@ -52,8 +52,6 @@ projetos.forEach(function(projeto) {
         <p>${projeto.descricao}</p>
 
         <span>${projeto.tecnologias}</span>
-
-        <a href="${projeto.link}" class="btn-projeto" target="_blank">Ver projeto</a>
     `;
 
     listaProjetos.appendChild(card);
