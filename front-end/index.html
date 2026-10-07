@@ -25,6 +25,7 @@
 
         <main>
             <section id="inicio">
+
                 <h2 id="titulo-dinamico">
                     <span class="simbolo">>>></span>
                     <span id="texto-titulo"></span>
@@ -36,7 +37,32 @@
                     em formação, com foco em programação e desenvolvimento de sistemas.
                 </p>
 
-                <a href="#projetos" class="btn" id="btnProjetos">Conheça meu trabalho</a>
+                <div id="acessoSistema">
+
+                    <p class="status-sistema">SYSTEM LOCKED</p>
+
+                    <div class="lista-modulos">
+
+                        <p id="statusModulo">Aguardando autorização...</p>
+                    
+                        <p id="acessoPermitido">ACESSO PERMITIDO</p>
+
+                    </div>
+
+                    <div class="barra-acesso">
+                        <div class="progresso-acesso" id="progressoAcesso"></div>
+                    </div>
+
+                    <span id="porcentagemAcesso">0%</span>
+
+                    <button id="btnAcesso" class="btn">
+                        Liberar acesso
+                    </button>
+
+                </div>
+
+
+
             </section>
 
             <section id="sobre">

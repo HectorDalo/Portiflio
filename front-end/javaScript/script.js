@@ -1,18 +1,11 @@
 let conexaoEstabelecida = false;
+let acessoLiberado = false;
+
+const statusSistema = document.querySelector(".status-sistema");
 
 console.log("Portfólio do Hector carregado!");
 
 const titulo = document.querySelector("#titulo-dinamico");
-
-const botaoProjetos = document.querySelector("#btnProjetos");
-
-botaoProjetos.addEventListener("click", function() {
-
-    console.log("O botão Conheça meu trabalho foi clicado!");
-
-    titulo.classList.toggle("destaque");
-
-});
 
 const projetos = [
 
@@ -265,6 +258,97 @@ terminalInput.addEventListener("keydown", function(event) {
     }
 });
 
+const statusModulo = document.querySelector("#statusModulo");
+
+const btnAcesso = document.querySelector("#btnAcesso");
+const progressoAcesso = document.querySelector("#progressoAcesso");
+const porcentagemAcesso = document.querySelector("#porcentagemAcesso");
+
+btnAcesso.addEventListener("click", function() {
+
+    setTimeout(function() {
+
+        statusModulo.textContent =
+            "Carregando módulo Sobre. . .";
+
+        progressoAcesso.style.width = "20%";
+        porcentagemAcesso.textContent = "20%";
+
+    }, 1000);
+        
+
+    setTimeout(function() {
+
+        statusModulo.textContent =
+            "Carregando módulo Habilidades. . .";
+
+        progressoAcesso.style.width = "40%";
+        porcentagemAcesso.textContent = "40%";
+
+    }, 3000);
+
+    setTimeout(function() {
+
+        statusModulo.textContent =
+            "Carregando módulo Projetos. . .";
+
+        progressoAcesso.style.width = "60%";
+        porcentagemAcesso.textContent = "60%";
+
+    }, 5000);
+
+    setTimeout(function() {
+
+        statusModulo.textContent =
+            "Carregando módulo Terminal. . .";
+
+        progressoAcesso.style.width = "80%";
+        porcentagemAcesso.textContent = "80%";
+
+    }, 7000);
+
+    setTimeout(function() {
+
+    statusModulo.textContent =
+            "Carregando módulo Contato. . .";
+
+    progressoAcesso.style.width = "100%";
+    porcentagemAcesso.textContent = "100%";
+
+    statusSistema.textContent =
+    "● SYSTEM ONLINE";
+
+    statusModulo.textContent =
+    "";
+
+    document.querySelector("#acessoPermitido").style.display = "block";
+
+    btnAcesso.style.display = "none";
+    porcentagemAcesso.style.display = "none";
+
+
+    if (porcentagemAcesso.textContent === "100%") {
+
+        acessoLiberado = true;
+
+        const body = document.querySelector("body");
+
+        body.classList.add("acesso-liberado");
+
+        console.log("ACESSO LIBERADO!");
+
+    }
+
+}, 9000);
+
+
+
+
+
+
+});
+
+
 const btnConexao = document.querySelector("#btnConexao");
 const carregamento = document.querySelector("#carregamento");
 const progresso = document.querySelector("#progresso");
@@ -299,3 +383,4 @@ btnConexao.addEventListener("click", function() {
 }, 30);
 
 });
+

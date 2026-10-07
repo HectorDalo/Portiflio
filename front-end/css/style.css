@@ -8,17 +8,30 @@ html {
     scroll-behavior:smooth;
 }
 
+:root {
+    --cor-sistema: #ff1744;
+    --fundo-sistema: rgba(20, 5, 8, 0.8);
+    --brilho-sistema: rgba(255, 23, 68, 0.2);
+}
+body:not(.acesso-liberado) {
+    --cor-site: #ff1744;
+    --brilho-site: rgba(255, 23, 68, 0.25);
+}
+
+body.acesso-liberado {
+    --cor-site: #00eaff;
+    --brilho-site: rgba(0, 234, 255, 0.25);
+}
+
 body {
     background:
-        linear-gradient(rgba(0, 234, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 234, 255, 0.025) 1px, transparent 1px),
-        radial-gradient(circle at 50% 0%, rgba(0, 234, 255, 0.08), transparent 35%),
-        radial-gradient(circle at 0% 50%, rgba(0, 234, 255, 0.03), transparent 30%),
-        radial-gradient(circle at 100% 80%, rgba(0, 234, 255, 0.03), transparent 30%),
+        linear-gradient(color-mix(in srgb, var(--cor-site) 3%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--cor-site) 3%, transparent) 1px, transparent 1px),
+        radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--cor-site) 8%, transparent), transparent 35%),
+        radial-gradient(circle at 0% 50%, color-mix(in srgb, var(--cor-site) 3%, transparent), transparent 30%),
+        radial-gradient(circle at 100% 80%, color-mix(in srgb, var(--cor-site) 3%, transparent), transparent 30%),
         #050505;
-
     background-size: 50px 50px, 50px 50px, auto, auto, auto, auto;
-
     color: #ffffff;
     font-family: Arial, sans-serif;
 }
@@ -29,7 +42,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px 60px;
-    border-bottom: 1px solid #00eaff;
+    border-bottom: 1px solid var(--cor-site);
     position: sticky;
     top: 0;
     background-color: rgba(5, 5, 5, 0.95);
@@ -37,9 +50,9 @@ header {
 }
 
 header h1 {
-    color: #00eaff;
+    color: var(--cor-site);
     font-size: 28px;
-    text-shadow: 0 0 10px #00eaff;
+    text-shadow: 0 0 10px var(--cor-site);
 }
 
 nav {
@@ -85,6 +98,111 @@ nav a:hover::after {
     padding: 40px 20px;
 }
 
+#acessoSistema {
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto 0;
+    text-align: center;
+    font-family: monospace;
+}
+
+.status-sistema {
+    color: var(--cor-site);
+    font-size: 16px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px var(--cor-site);
+    animation: pulsoSistema 1.5s ease-in-out infinite;
+}
+
+.lista-modulos {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lista-modulos p {
+    color: var(--cor-sistema);
+    margin: 8px 0;
+    font-size: 15px;
+    white-space: pre-line;
+}
+
+#statusModulo,
+#acessoPermitido {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+#acessoPermitido {
+    margin-top: 3px;
+}
+
+
+#acessoSistema .btn {
+    display: block;
+    margin: 25px auto 0;
+    border-color: var(--cor-sistema);
+    color: var(--cor-sistema);
+    box-shadow: 0 0 10px var(--brilho-sistema);
+}
+
+.barra-acesso {
+    width: 100%;
+    height: 6px;
+    margin-top: 25px;
+    background-color: color-mix(in srgb, var(--cor-site) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cor-site) 40%, transparent);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progresso-acesso {
+    width: 0%;
+    height: 100%;
+    background-color: var(--cor-site);
+    box-shadow: 0 0 10px var(--cor-site);
+    transition: width 0.2s ease;
+}
+
+#porcentagemAcesso {
+    display: block;
+    margin-top: 8px;
+    text-align: right;
+    color: var(--cor-sistema);
+    font-family: monospace;
+    font-size: 13px;
+
+    
+}
+
+@keyframes pulsoSistema {
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 5px var(--cor-site);
+    }
+
+    50% {
+        opacity: 0.5;
+        text-shadow: 0 0 15px var(--cor-site);
+    }
+}
+
+
+#statusModulo {
+    text-align: center;
+}
+
+#acessoPermitido {
+    display: none;
+    color: var(--cor-site);
+    font-size: 14px;
+    text-align: center;
+    text-shadow: 0 0 8px var(--cor-site);
+}
+
+
 #inicio h2 {
     font-size: 56px;
     margin-bottom: 20px;
@@ -98,17 +216,18 @@ nav a:hover::after {
 @keyframes carregando {
     0%, 100% {
         opacity: 1;
-        text-shadow: 0 0 5px #00eaff;
+        text-shadow: 0 0 5px var(--cor-site);
     }
 
     50% {
         opacity: 0.35;
-        text-shadow: 0 0 15px #00eaff;
+        text-shadow: 0 0 15px var(--cor-site);
     }
+
 }
 
 .simbolo {
-    color: #00eaff;
+    color: var(--cor-site);
     display: inline-block;
 }
 
@@ -118,14 +237,14 @@ nav a:hover::after {
 
 
 #inicio h2.destaque {
-    color: #00eaff;
+    color: var(--cor-site);
 }
 
 #inicio p {
     font-size: 20px;
     color: #bdbdbd;
     max-width: 700px;
-    margin-bottom: 35px;
+    margin: 0 auto 35px;
 }
 
 .btn {
@@ -355,7 +474,7 @@ nav a:hover::after {
 footer {
     padding: 30px 20px;
     text-align: center;
-    border-top: 1px solid #00eaff;
+    border-top: 1px solid var(--cor-site);
     color: #777777;
     font-size: 14px;
     background-color: #020202;
@@ -520,6 +639,27 @@ footer {
 
 }
 
+#inicio #statusModulo,
+#inicio #acessoPermitido {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+#inicio #acessoPermitido {
+    margin-top: 3px;
+}
+
+#acessoSistema .btn:hover {
+    background-color: var(--cor-sistema);
+    color: #050505;
+    box-shadow: 0 0 20px var(--cor-sistema);
+}
+
+.status-sistema {
+    animation: pulsoSistema 1.5s ease-in-out infinite;
+}
+
 @media (max-width: 900px) {
     header {
         padding: 20px;
@@ -581,4 +721,12 @@ footer {
     }
 
 
+}
+
+body:not(.acesso-liberado) #sobre,
+body:not(.acesso-liberado) #habilidades,
+body:not(.acesso-liberado) #projetos,
+body:not(.acesso-liberado) #terminal,
+body:not(.acesso-liberado) #contato {
+    display: none;
 }
