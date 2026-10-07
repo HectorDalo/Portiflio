@@ -1,10 +1,10 @@
+let conexaoEstabelecida = false;
+
 console.log("Portfólio do Hector carregado!");
 
 const titulo = document.querySelector("#titulo-dinamico");
 
 const botaoProjetos = document.querySelector("#btnProjetos");
-
-const btnContato = document.querySelector("#btnContato");
 
 botaoProjetos.addEventListener("click", function() {
 
@@ -58,11 +58,6 @@ projetos.forEach(function(projeto) {
 
 });
 
-btnContato.addEventListener("click", function() {
-
-    console.log("O botão Entrar em contato foi clicado!");
-
-});
 
 const tituloDinamico = document.querySelector("#titulo-dinamico");
 const textoTitulo = document.querySelector("#texto-titulo");
@@ -226,14 +221,18 @@ terminalInput.addEventListener("keydown", function(event) {
     const respostaContato = document.createElement("p");
 
     respostaContato.innerHTML = `
-        Contato:<br>
-        WhatsApp: (11) 97993-4334<br>
-        <br>
-        Para entrar em contato, utilize o botão
-        "Entrar em contato" na seção Contato.
+        Canais disponíveis:<br><br>
+        [1] WhatsApp<br><br>
+        Digite "whatsapp" para iniciar a conexão.
     `;
 
     terminalConteudo.appendChild(respostaContato);
+
+    break;
+
+    case "whatsapp":
+
+    window.open("https://wa.me/5511979934334", "_blank");
 
     break;
 
@@ -251,4 +250,39 @@ terminalInput.addEventListener("keydown", function(event) {
 
         terminalInput.value = "";
     }
+});
+
+const btnConexao = document.querySelector("#btnConexao");
+const carregamento = document.querySelector("#carregamento");
+const progresso = document.querySelector("#progresso");
+const porcentagem = document.querySelector("#porcentagem");
+const conexaoSucesso = document.querySelector("#conexaoSucesso");
+
+btnConexao.addEventListener("click", function() {
+
+    btnConexao.style.display = "none";
+    carregamento.style.display = "block";
+    let valor = 0;
+
+    const intervalo = setInterval(function() {
+
+        valor++;
+
+        progresso.style.width = valor + "%";
+        porcentagem.textContent = valor + "%";
+
+        if (valor >= 100) {
+
+            clearInterval(intervalo);
+
+            carregamento.style.display = "none";
+            conexaoSucesso.style.display = "block";
+
+            conexaoEstabelecida = true;
+
+
+}
+
+}, 30);
+
 });
