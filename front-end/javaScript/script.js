@@ -232,7 +232,20 @@ terminalInput.addEventListener("keydown", function(event) {
 
     case "whatsapp":
 
-    window.open("https://wa.me/5511979934334", "_blank");
+    if (conexaoEstabelecida) {
+
+        window.open("https://wa.me/5511979934334", "_blank");
+
+    } else {
+
+        const respostaConexao = document.createElement("p");
+
+        respostaConexao.textContent =
+            "Conexão não estabelecida. Acesse a seção Contato primeiro.";
+
+        terminalConteudo.appendChild(respostaConexao);
+
+}
 
     break;
 
