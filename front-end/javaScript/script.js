@@ -45,12 +45,53 @@ projetos.forEach(function(projeto) {
         <p>${projeto.descricao}</p>
 
         <span>${projeto.tecnologias}</span>
+
+        <a href="${projeto.link}" 
+            class="btn-projeto"
+            target="_blank">      
+            <span class="texto-botao">Ver projeto</span>
+        </a>
+
+        <div class="status-projeto"></div>
     `;
 
     listaProjetos.appendChild(card);
 
 });
 
+const botoesProjeto = document.querySelectorAll(".btn-projeto");
+
+botoesProjeto.forEach(function(botao) {
+
+    botao.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        const status = botao.parentElement.querySelector(".status-projeto");
+
+        status.textContent = "> ACESSANDO PROJETO...";
+        status.style.opacity = "1";
+
+        setTimeout(function() {
+            status.textContent = "> CONEXÃO ESTABELECIDA";
+        }, 300);
+
+        setTimeout(function() {
+            status.textContent = "> REDIRECIONANDO...";
+        }, 600);
+
+        setTimeout(function() {
+            window.open(botao.href, "_blank");
+
+            setTimeout(function() {
+                status.style.opacity = "0";
+        }, 300);
+
+    }, 900);
+
+});
+
+});
 
 const tituloDinamico = document.querySelector("#titulo-dinamico");
 const textoTitulo = document.querySelector("#texto-titulo");

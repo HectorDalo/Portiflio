@@ -407,6 +407,17 @@ nav a:hover::after {
     box-shadow: 0 0 10px var(--brilho-site);
 } 
 
+.status-projeto {
+    min-height: 20px;
+    margin-top: 12px;
+    color: var(--cor-site);
+    font-family: monospace;
+    font-size: 12px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
 
 .projeto h3 {
     font-size: 26px;
@@ -442,10 +453,69 @@ nav a:hover::after {
     transition: 0.3s;
 }
 
-.btn-projeto:hover {
-    background-color: #00eaff;
+.btn-projeto {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.btn-projeto:hover .texto-botao {
     color: #050505;
-    box-shadow: 0 0 15px #00eaff;
+}
+
+.btn-projeto .efeito-botao {
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: #ffffff;
+    opacity: 0;
+    transform: skewX(-20deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.btn-projeto.ativando .efeito-botao {
+    animation: varreduraBotao 0.6s linear;
+}
+
+.btn-projeto.ativando .texto-botao {
+    color: #050505;
+}
+
+.btn-projeto.ativando {
+    box-shadow:
+        0 0 10px var(--cor-site),
+        0 0 25px var(--cor-site),
+        0 0 40px var(--cor-site);
+}
+
+
+@keyframes varreduraBotao {
+    0% {
+        left: -50%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+.btn-projeto:hover {
+    background-color: var(--cor-site);
+    box-shadow: 0 0 15px var(--cor-site);
+    transform: translateY(-2px);
 }
 
 .projeto:hover {
@@ -602,6 +672,31 @@ footer {
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
+}
+
+.canais-contato {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.canal-contato {
+    padding: 10px 20px;
+    border: 1px solid var(--cor-site);
+    border-radius: 6px;
+    color: var(--cor-site);
+    text-decoration: none;
+    font-family: monospace;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.canal-contato:hover {
+    background-color: var(--cor-site);
+    color: #050505;
+    box-shadow: 0 0 15px var(--cor-site);
 }
 
 #btnConexao {
