@@ -91,6 +91,41 @@ botoesProjeto.forEach(function(botao) {
 
 });
 
+const canaisContato = document.querySelectorAll(".canal-contato");
+
+canaisContato.forEach(function(canal) {
+
+    canal.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        const status = canal.parentElement.querySelector(".status-contato");
+        const nomeCanal = canal.textContent.trim().toUpperCase();
+
+        status.textContent = "> INICIANDO " + nomeCanal + "...";
+        status.style.opacity = "1";
+
+        setTimeout(function() {
+            status.textContent = "> CONEXÃO ESTABELECIDA";
+        }, 300);
+
+        setTimeout(function() {
+            status.textContent = "> REDIRECIONANDO...";
+        }, 600);
+
+        setTimeout(function() {
+            window.open(canal.href, "_blank");
+
+            setTimeout(function() {
+                status.style.opacity = "0";
+            }, 300);
+
+        }, 900);
+
+    });
+
+});
+
 });
 
 const tituloDinamico = document.querySelector("#titulo-dinamico");
