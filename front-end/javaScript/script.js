@@ -120,12 +120,23 @@ setInterval(function() {
 
 const terminalInput = document.querySelector("#terminalInput");
 const terminalConteudo = document.querySelector(".terminal-conteudo");
+const historicoTerminal =
+    document.querySelector("#historicoTerminal");
 
 terminalInput.addEventListener("keydown", function(event) {
 
     if (event.key === "Enter") {
 
         const comando = terminalInput.value.trim().toLowerCase();
+
+        const comandoDigitado = document.createElement("p");
+
+        comandoDigitado.classList.add("comando-digitado");
+
+        comandoDigitado.textContent =
+            "hector@portfolio:~$ " + comando;
+
+        historicoTerminal.appendChild(comandoDigitado);
 
         switch (comando) {
 
@@ -138,107 +149,166 @@ terminalInput.addEventListener("keydown", function(event) {
             sobre - informações sobre mim<br>
             skills - minhas habilidades<br>
             projetos - meus projetos<br>
-            contato - como entrar em contato
+            Contato - como entrar em contato<br>
+            Clear - limpar o terminal<br>
+            status - status do sistema
         `;
 
-        terminalConteudo.appendChild(resposta);
+        historicoTerminal.appendChild(resposta);
 
-        break;
+    break;
 
     case "sobre":
 
-    const respostaSobre = document.createElement("p");
+        const respostaSobre = document.createElement("p");
 
-    respostaSobre.innerHTML = `
-        Nome: Hector Dalonso<br>
-        Formação: Ciência da Computação<br>
-        Status: Desenvolvedor em formação<br>
-        Área: Desenvolvimento de sistemas
-    `;
+        respostaSobre.innerHTML = `
+            Nome: Hector Dalonso<br>
+            Formação: Ciência da Computação<br>
+            Status: Desenvolvedor em formação<br>
+            Área: Desenvolvimento de sistemas
+        `;
 
-    terminalConteudo.appendChild(respostaSobre);
+        historicoTerminal.appendChild(respostaSobre);
 
     break;
 
     case "skills":
 
-    const respostaSkills = document.createElement("p");
+        const respostaSkills = document.createElement("p");
 
-    respostaSkills.innerHTML = `
-        Linguagens:<br>
-        - Python<br>
-        - JavaScript<br><br>
+        respostaSkills.innerHTML = `
+            Linguagens:<br>
+            - Python<br>
+            - JavaScript<br><br>
 
-        Web:<br>
-        - HTML<br>
-        - CSS<br><br>
+            Web:<br>
+            - HTML<br>
+            - CSS<br><br>
 
-        Conceitos:<br>
-        - Programação Orientada a Objetos
-    `;
+            Conceitos:<br>
+            - Programação Orientada a Objetos
+        `;
 
-    terminalConteudo.appendChild(respostaSkills);
+        historicoTerminal.appendChild(respostaSkills);
 
     break;
 
     case "projetos":
 
-    const respostaProjetos = document.createElement("p");
+        const respostaProjetos = document.createElement("p");
 
-    respostaProjetos.innerHTML = `
-        [1] Portfólio Pessoal<br>
-        HTML • CSS • JavaScript<br><br>
+        respostaProjetos.innerHTML = `
+            Projetos disponíveis:<br><br>
+            [1] Portfólio Pessoal<br>
+            Digite: projeto portfolio<br><br>
+            [2] Sistema de Cadastro de Clientes<br>
+            Digite: projeto cadastro
+        `;
 
-        [2] Sistema de Cadastro de Clientes<br>
-        Python • Tkinter • JSON
-    `;
-
-    terminalConteudo.appendChild(respostaProjetos);
+        historicoTerminal.appendChild(respostaProjetos);
 
     break;
 
     case "projeto 1":
 
-    window.open(projetos[0].link, "_blank");
+        const respostaProjeto1 = document.createElement("p");
+
+        respostaProjeto1.textContent =
+            "Abrindo " + projetos[0].nome + "...";
+
+        historicoTerminal.appendChild(respostaProjeto1);
+
+        setTimeout(function() {
+            window.open(projetos[0].link, "_blank");
+        }, 1000);
 
     break;
 
     case "projeto 2":
 
-    window.open(projetos[1].link, "_blank");
+        case "projeto cadastro":
+
+            const respostaCadastro = document.createElement("p");
+
+            respostaCadastro.textContent =
+                "Abrindo " + projetos[1].nome + "...";
+
+            historicoTerminal.appendChild(respostaCadastro);
+
+            setTimeout(function() {
+                window.open(projetos[1].link, "_blank");
+        }, 1000);
 
     break;
 
     case "contato":
 
-    const respostaContato = document.createElement("p");
+        const respostaContato = document.createElement("p");
 
-    respostaContato.innerHTML = `
-        Canais disponíveis:<br><br>
-        [1] WhatsApp<br><br>
-        Digite "whatsapp" para iniciar a conexão.
-    `;
+        respostaContato.innerHTML = `
+            Canais disponíveis:<br><br>
+            [1] WhatsApp<br><br>
+            Digite "whatsapp" para iniciar a conexão.
+        `;
 
-    terminalConteudo.appendChild(respostaContato);
+        historicoTerminal.appendChild(respostaContato);
 
     break;
 
     case "whatsapp":
 
-    if (conexaoEstabelecida) {
+        if (conexaoEstabelecida) {
 
-        window.open("https://wa.me/5511979934334", "_blank");
+            const respostaWhatsApp = document.createElement("p");
 
-    } else {
+            respostaWhatsApp.classList.add("sucesso-terminal");
 
-        const respostaConexao = document.createElement("p");
+            respostaWhatsApp.textContent =
+                "CANAL WHATSAPP AUTORIZADO. INICIANDO CONEXÃO...";
 
-        respostaConexao.textContent =
-            "Conexão não estabelecida. Acesse a seção Contato primeiro.";
+            historicoTerminal.appendChild(respostaWhatsApp);
 
-        terminalConteudo.appendChild(respostaConexao);
+            setTimeout(function() {
+                window.open("https://wa.me/5511979934334", "_blank");
+            }, 3000);
 
-}
+        }else{
+
+            const respostaConexao = document.createElement("p");
+
+            respostaConexao.classList.add("erro-terminal");
+
+             respostaConexao.textContent =
+                "ERRO: conexão não estabelecida. Acesse a seção Contato para liberar o canal.";
+
+            historicoTerminal.appendChild(respostaConexao);
+        }
+    break;
+
+    case "clear":
+
+        historicoTerminal.innerHTML = "";
+
+    break;
+
+    case "status":
+
+        const respostaStatus = document.createElement("p");
+
+            respostaStatus.innerHTML = `
+                SYSTEM STATUS<br><br>
+                ${acessoLiberado
+                    ? "[✓] Sistema ........ ONLINE"
+                    : "[!] Sistema ........ BLOQUEADO"}<br>
+                [✓] Terminal ........ ONLINE<br>
+                [✓] Projetos ........ ONLINE<br>
+                ${conexaoEstabelecida
+                    ? "[✓] WhatsApp ........ CONECTADO"
+                    : "[!] WhatsApp ........ BLOQUEADO"}
+            `;
+
+            historicoTerminal.appendChild(respostaStatus);
 
     break;
 
@@ -249,12 +319,17 @@ terminalInput.addEventListener("keydown", function(event) {
         respostaErro.textContent =
             `Comando não encontrado: ${comando}`;
 
-        terminalConteudo.appendChild(respostaErro);
+        historicoTerminal.appendChild(respostaErro);
 
-        break;
+    break;
 }
+        terminalConteudo.appendChild(document.querySelector(".terminal-linha"));
 
         terminalInput.value = "";
+
+        terminalInput.focus();
+
+        terminalConteudo.scrollTop = terminalConteudo.scrollHeight;
     }
 });
 
@@ -266,13 +341,25 @@ const porcentagemAcesso = document.querySelector("#porcentagemAcesso");
 
 btnAcesso.addEventListener("click", function() {
 
+    let progresso = 0;
+
+    const animacaoProgresso = setInterval(function() {
+
+        progresso += 1;
+
+        progressoAcesso.style.width = progresso + "%";
+        porcentagemAcesso.textContent = progresso + "%";
+
+        if (progresso >= 100) {
+        clearInterval(animacaoProgresso);
+        }
+
+    }, 90);
+
     setTimeout(function() {
 
         statusModulo.textContent =
             "Carregando módulo Sobre. . .";
-
-        progressoAcesso.style.width = "20%";
-        porcentagemAcesso.textContent = "20%";
 
     }, 1000);
         
@@ -282,18 +369,12 @@ btnAcesso.addEventListener("click", function() {
         statusModulo.textContent =
             "Carregando módulo Habilidades. . .";
 
-        progressoAcesso.style.width = "40%";
-        porcentagemAcesso.textContent = "40%";
-
     }, 3000);
 
     setTimeout(function() {
 
         statusModulo.textContent =
             "Carregando módulo Projetos. . .";
-
-        progressoAcesso.style.width = "60%";
-        porcentagemAcesso.textContent = "60%";
 
     }, 5000);
 
@@ -302,18 +383,12 @@ btnAcesso.addEventListener("click", function() {
         statusModulo.textContent =
             "Carregando módulo Terminal. . .";
 
-        progressoAcesso.style.width = "80%";
-        porcentagemAcesso.textContent = "80%";
-
     }, 7000);
 
     setTimeout(function() {
 
     statusModulo.textContent =
             "Carregando módulo Contato. . .";
-
-    progressoAcesso.style.width = "100%";
-    porcentagemAcesso.textContent = "100%";
 
     statusSistema.textContent =
     "● SYSTEM ONLINE";
@@ -323,11 +398,22 @@ btnAcesso.addEventListener("click", function() {
 
     document.querySelector("#acessoPermitido").style.display = "block";
 
-    btnAcesso.style.display = "none";
-    porcentagemAcesso.style.display = "none";
+    btnAcesso.style.opacity = "0";
+    btnAcesso.style.transform = "translateY(-10px)";
+
+    setTimeout(function() {
+        btnAcesso.style.visibility = "hidden";
+    }, 500);
+
+    porcentagemAcesso.style.opacity = "0";
+    porcentagemAcesso.style.transform = "translateY(-10px)";
+
+    setTimeout(function() {
+        porcentagemAcesso.style.visibility = "hidden";
+    }, 500);
 
 
-    if (porcentagemAcesso.textContent === "100%") {
+        if (porcentagemAcesso.textContent === "100%") {
 
         acessoLiberado = true;
 
@@ -337,17 +423,37 @@ btnAcesso.addEventListener("click", function() {
 
         console.log("ACESSO LIBERADO!");
 
+        const secoes = document.querySelectorAll(
+            "#sobre, #habilidades, #projetos, #terminal, #contato"
+        );
+
+        secoes.forEach(function(secao) {
+            secao.classList.add("secao-animada");
+        });
+
+        const observadorSecoes = new IntersectionObserver(function(entradas) {
+
+            entradas.forEach(function(entrada) {
+
+                if (entrada.isIntersecting) {
+                    entrada.target.classList.add("visivel");
+                }
+
+            });
+
+        }, {
+            threshold: 0.2
+        });
+
+        secoes.forEach(function(secao) {
+            observadorSecoes.observe(secao);
+        });
+
     }
 
 }, 9000);
 
-
-
-
-
-
 });
-
 
 const btnConexao = document.querySelector("#btnConexao");
 const carregamento = document.querySelector("#carregamento");
@@ -383,4 +489,3 @@ btnConexao.addEventListener("click", function() {
 }, 30);
 
 });
-
