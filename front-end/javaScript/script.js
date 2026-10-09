@@ -196,217 +196,342 @@ setInterval(function() {
 
 const terminalInput = document.querySelector("#terminalInput");
 const terminalConteudo = document.querySelector(".terminal-conteudo");
-const historicoTerminal =
-    document.querySelector("#historicoTerminal");
+const historicoTerminal = document.querySelector("#historicoTerminal");
+function mostrarTextoTerminal(texto, classe = "") {
+    const linha = document.createElement("p");
 
-terminalInput.addEventListener("keydown", function(event) {
+    linha.textContent = texto;
 
-    if (event.key === "Enter") {
-
-        const comando = terminalInput.value.trim().toLowerCase();
-
-        const comandoDigitado = document.createElement("p");
-
-        comandoDigitado.classList.add("comando-digitado");
-
-        comandoDigitado.textContent =
-            "hector@portfolio:~$ " + comando;
-
-        historicoTerminal.appendChild(comandoDigitado);
-
-        switch (comando) {
-
-    case "help":
-
-        const resposta = document.createElement("p");
-
-        resposta.innerHTML = `
-            Comandos disponíveis:<br>
-            sobre - informações sobre mim<br>
-            skills - minhas habilidades<br>
-            projetos - meus projetos<br>
-            Contato - como entrar em contato<br>
-            Clear - limpar o terminal<br>
-            status - status do sistema
-        `;
-
-        historicoTerminal.appendChild(resposta);
-
-    break;
-
-    case "sobre":
-
-        const respostaSobre = document.createElement("p");
-
-        respostaSobre.innerHTML = `
-            Nome: Hector Dalonso<br>
-            Formação: Ciência da Computação<br>
-            Status: Desenvolvedor em formação<br>
-            Área: Desenvolvimento de sistemas
-        `;
-
-        historicoTerminal.appendChild(respostaSobre);
-
-    break;
-
-    case "skills":
-
-        const respostaSkills = document.createElement("p");
-
-        respostaSkills.innerHTML = `
-            Linguagens:<br>
-            - Python<br>
-            - JavaScript<br><br>
-
-            Web:<br>
-            - HTML<br>
-            - CSS<br><br>
-
-            Conceitos:<br>
-            - Programação Orientada a Objetos
-        `;
-
-        historicoTerminal.appendChild(respostaSkills);
-
-    break;
-
-    case "projetos":
-
-        const respostaProjetos = document.createElement("p");
-
-        respostaProjetos.innerHTML = `
-            Projetos disponíveis:<br><br>
-            [1] Portfólio Pessoal<br>
-            Digite: projeto portfolio<br><br>
-            [2] Sistema de Cadastro de Clientes<br>
-            Digite: projeto cadastro
-        `;
-
-        historicoTerminal.appendChild(respostaProjetos);
-
-    break;
-
-    case "projeto 1":
-
-        const respostaProjeto1 = document.createElement("p");
-
-        respostaProjeto1.textContent =
-            "Abrindo " + projetos[0].nome + "...";
-
-        historicoTerminal.appendChild(respostaProjeto1);
-
-        setTimeout(function() {
-            window.open(projetos[0].link, "_blank");
-        }, 1000);
-
-    break;
-
-    case "projeto 2":
-
-        case "projeto cadastro":
-
-            const respostaCadastro = document.createElement("p");
-
-            respostaCadastro.textContent =
-                "Abrindo " + projetos[1].nome + "...";
-
-            historicoTerminal.appendChild(respostaCadastro);
-
-            setTimeout(function() {
-                window.open(projetos[1].link, "_blank");
-        }, 1000);
-
-    break;
-
-    case "contato":
-
-        const respostaContato = document.createElement("p");
-
-        respostaContato.innerHTML = `
-            Canais disponíveis:<br><br>
-            [1] WhatsApp<br><br>
-            Digite "whatsapp" para iniciar a conexão.
-        `;
-
-        historicoTerminal.appendChild(respostaContato);
-
-    break;
-
-    case "whatsapp":
-
-        if (conexaoEstabelecida) {
-
-            const respostaWhatsApp = document.createElement("p");
-
-            respostaWhatsApp.classList.add("sucesso-terminal");
-
-            respostaWhatsApp.textContent =
-                "CANAL WHATSAPP AUTORIZADO. INICIANDO CONEXÃO...";
-
-            historicoTerminal.appendChild(respostaWhatsApp);
-
-            setTimeout(function() {
-                window.open("https://wa.me/5511979934334", "_blank");
-            }, 3000);
-
-        }else{
-
-            const respostaConexao = document.createElement("p");
-
-            respostaConexao.classList.add("erro-terminal");
-
-             respostaConexao.textContent =
-                "ERRO: conexão não estabelecida. Acesse a seção Contato para liberar o canal.";
-
-            historicoTerminal.appendChild(respostaConexao);
-        }
-    break;
-
-    case "clear":
-
-        historicoTerminal.innerHTML = "";
-
-    break;
-
-    case "status":
-
-        const respostaStatus = document.createElement("p");
-
-            respostaStatus.innerHTML = `
-                SYSTEM STATUS<br><br>
-                ${acessoLiberado
-                    ? "[✓] Sistema ........ ONLINE"
-                    : "[!] Sistema ........ BLOQUEADO"}<br>
-                [✓] Terminal ........ ONLINE<br>
-                [✓] Projetos ........ ONLINE<br>
-                ${conexaoEstabelecida
-                    ? "[✓] WhatsApp ........ CONECTADO"
-                    : "[!] WhatsApp ........ BLOQUEADO"}
-            `;
-
-            historicoTerminal.appendChild(respostaStatus);
-
-    break;
-
-    default:
-
-        const respostaErro = document.createElement("p");
-
-        respostaErro.textContent =
-            `Comando não encontrado: ${comando}`;
-
-        historicoTerminal.appendChild(respostaErro);
-
-    break;
-}
-        terminalConteudo.appendChild(document.querySelector(".terminal-linha"));
-
-        terminalInput.value = "";
-
-        terminalInput.focus();
-
-        terminalConteudo.scrollTop = terminalConteudo.scrollHeight;
+    if (classe) {
+        linha.classList.add(classe);
     }
+
+    historicoTerminal.appendChild(linha);
+}
+
+function mostrarHtmlTerminal(html, classe = "") {
+    const linha = document.createElement("p");
+    linha.innerHTML = html;
+
+    if (classe) {
+        linha.classList.add(classe);
+    }
+
+    historicoTerminal.appendChild(linha);
+}
+
+function mostrarSecaoTerminal(titulo, conteudo) {
+    mostrarHtmlTerminal(`
+        <div class="terminal-cabecalho-resposta">
+            ${titulo}
+        </div>
+
+        <div class="terminal-separador">
+            ----------------------------------------
+        </div>
+
+        <div class="terminal-corpo-resposta">
+            ${conteudo}
+        </div>
+    `);
+}
+
+// Abre um projeto pelo índice do array projetos
+function abrirProjetoTerminal(indice) {
+    const projeto = projetos[indice];
+
+    if (!projeto) {
+        mostrarTextoTerminal("Projeto não encontrado.", "erro-terminal");
+        return;
+    }
+
+    if (!projeto.link || projeto.link === "#") {
+        mostrarTextoTerminal(
+            "Este é o próprio portfólio. Você já está visualizando o projeto."
+        );
+        return;
+    }
+
+    mostrarTextoTerminal("> ACESSANDO " + projeto.nome.toUpperCase() + "...");
+    mostrarTextoTerminal("> CONEXÃO ESTABELECIDA", "sucesso-terminal");
+
+    setTimeout(function () {
+        mostrarTextoTerminal("> REDIRECIONANDO...");
+        window.open(projeto.link, "_blank", "noopener,noreferrer");
+    }, 700);
+}
+
+// Processa os comandos digitados
+terminalInput.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    const comando = terminalInput.value.trim().toLowerCase();
+
+    if (!comando) {
+        return;
+    }
+
+    mostrarTextoTerminal(
+        "hector@portfolio:~$ " + comando,
+        "comando-digitado"
+    );
+
+    switch (comando) {
+        case "help":
+        case "ajuda":
+        case "comandos":
+            mostrarSecaoTerminal(
+                "HD. — CURRÍCULO INTERATIVO",
+                `
+                    <p><strong>perfil</strong> — apresentação profissional</p>
+                    <p><strong>formacao</strong> — formação acadêmica</p>
+                    <p><strong>cursos</strong> — cursos e certificações</p>
+                    <p><strong>habilidades</strong> — competências técnicas</p>
+                    <p><strong>experiencia</strong> — histórico profissional</p>
+                    <p><strong>objetivo</strong> — objetivo profissional</p>
+                    <p><strong>clear</strong> — limpar o terminal</p>
+                `
+            );
+            break;
+
+        case "perfil":
+        case "sobre":
+            mostrarSecaoTerminal(
+                "PERFIL PROFISSIONAL",
+                `
+                    <p><strong>Nome:</strong> Hector Dalonso</p>
+                    <p><strong>Formação:</strong> Ciência da Computação</p>
+                    <p><strong>Status:</strong> Desenvolvedor em formação</p>
+                    <p><strong>Área de interesse:</strong> Desenvolvimento de software</p>
+
+                    <p class="terminal-paragrafo">
+                        Estudante de Ciência da Computação, com interesse em
+                        programação, desenvolvimento de sistemas, automação
+                        e tecnologia. Busca evoluir por meio de projetos
+                        práticos e aprendizado contínuo.
+                    </p>
+                `
+            );
+            break;
+
+        case "formacao":
+        case "formação":
+            mostrarSecaoTerminal(
+                "FORMAÇÃO ACADÊMICA",
+                `
+                    <p><strong>Curso:</strong> Ciência da Computação</p>
+                    <p><strong>Situação:</strong> Em andamento</p>
+                    <p><strong>Período:</strong> 2º semestre</p>
+
+                    <p class="terminal-subtitulo">FOCO DE APRENDIZADO</p>
+                    <p>• Lógica de programação</p>
+                    <p>• Desenvolvimento de software</p>
+                    <p>• Programação e tecnologia</p>
+                `
+            );
+            break;
+
+        case "habilidades":
+        case "skills":
+            mostrarSecaoTerminal(
+                "COMPETÊNCIAS TÉCNICAS",
+                `
+                    <p class="terminal-subtitulo">LINGUAGENS E WEB</p>
+                    <p>• Python</p>
+                    <p>• JavaScript</p>
+                    <p>• HTML5</p>
+                    <p>• CSS</p>
+
+                    <p class="terminal-subtitulo">CONCEITOS E FERRAMENTAS</p>
+                    <p>• Programação Orientada a Objetos</p>
+                    <p>• Tkinter</p>
+                    <p>• JSON</p>
+                    <p>• Lógica de programação</p>
+
+                    <p class="terminal-subtitulo">OUTROS CONHECIMENTOS</p>
+                    <p>• Suporte técnico</p>
+                    <p>• Manutenção de computadores</p>
+                    <p>• Resolução de problemas</p>
+                `
+            );
+            break;
+        
+        case "cursos":
+        case "certificados":
+        case "extracurriculares":
+
+            mostrarSecaoTerminal(
+                "CURSOS E CERTIFICAÇÕES",
+                `
+                    <p class="terminal-subtitulo">
+                        01 — PROGRAMAÇÃO E TECNOLOGIA
+                    </p>
+
+                    <p><strong>Pensamento Computacional</strong></p>
+                    <p class="terminal-tecnologias">
+                        Fundação Bradesco | Julho de 2026
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p><strong>Desenvolvimento Orientado a Objetos Utilizando a Linguagem Python</strong></p>
+                    <p class="terminal-tecnologias">
+                        Fundação Bradesco | Julho de 2026
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p><strong>Introdução à Programação Orientada a Objetos</strong></p>
+                    <p class="terminal-tecnologias">
+                        Fundação Bradesco | Março de 2026
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p><strong>Linguagem de Programação Python — Básico</strong></p>
+                    <p class="terminal-tecnologias">
+                        Fundação Bradesco | Janeiro de 2026
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p><strong>Site Simples Usando HTML, CSS, JavaScript</strong></p>
+                    <p class="terminal-tecnologias">
+                        Fundação Bradesco | Janeiro de 2026
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p class="terminal-subtitulo">
+                        02 — CURSOS COMPLEMENTARES
+                    </p>
+
+                    <p><strong>Almoxarife</strong></p>
+                    <p class="terminal-tecnologias">
+                        Bom Curso | 2022
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p><strong>Gestão Empresarial</strong></p>
+                    <p class="terminal-tecnologias">
+                        Start Pró Formação Profissional | 2016
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p><strong>Informática</strong></p>
+                    <p class="terminal-tecnologias">
+                        Start Pró Formação Profissional | 2016
+                    </p>
+
+                    <div class="terminal-espaco"></div>
+
+                    <p><strong>Inglês</strong></p>
+                    <p class="terminal-tecnologias">
+                        Start Pró Formação Profissional | 2016
+                    </p>
+                `
+            );
+
+            break;
+
+        case "experiencia":
+        case "experiencias":
+        case "experiências":
+
+        mostrarSecaoTerminal("EXPERIÊNCIA PROFISSIONAL", `
+            <p><strong>01. Centro Universitário ENIAC</strong></p>
+            <p class="terminal-tecnologias">Estagiário em Suporte Técnico de Tecnologia da Informação | Ago/2026 – Atual</p>
+            <p>• Desenvolvimento e manutenção de páginas web utilizando HTML e JavaScript.</p>
+            <p>• Suporte técnico a computadores, periféricos, laboratórios e Chromebooks.</p>
+            <p>• Acompanhamento de chamados técnicos e identificação de problemas.</p>
+            <p>• Automação de tarefas, criação de soluções Low Code e colaboração com a equipe de TI.</p>
+
+            <div class="terminal-espaco"></div>
+
+            <p><strong>02. Edu Tintas</strong></p>
+            <p class="terminal-tecnologias">Auxiliar de Loja | Nov/2025 – Ago/2026</p>
+            <p>• Organização de estoque e preparação de mercadorias para expedição.</p>
+            <p>• Utilização de sistemas internos para conferência de pedidos, notas fiscais e liberação de produtos.</p>
+            <p>• Acompanhamento de processos digitais e identificação de inconsistências nas informações.</p>
+
+            <div class="terminal-espaco"></div>
+
+            <p><strong>03. Ambev</strong></p>
+            <p class="terminal-tecnologias">Técnico de Máquinas de Refrigeração | Nov/2022 – Fev/2023</p>
+            <p>• Execução de manutenções preventivas e corretivas.</p>
+            <p>• Diagnóstico de falhas e resolução de problemas técnicos em campo.</p>
+            <p>• Atendimento de chamados e acompanhamento de ocorrências técnicas.</p>
+
+            <div class="terminal-espaco"></div>
+
+            <p><strong>04. REAL ROSA</strong></p>
+            <p class="terminal-tecnologias">Assistente Geral | Set/2016 – Jan/2018</p>
+            <p>• Apoio às rotinas operacionais, organização de estoque e atendimento ao cliente.</p>
+            <p>• Auxílio na manutenção de computadores e resolução de problemas técnicos.</p>
+            <p>• Contato com infraestrutura de rede e suporte básico aos equipamentos.</p>
+            <div class="terminal-espaco"></div>
+
+            <p><strong>05. Start Pro</strong></p>
+            <p class="terminal-tecnologias">Trainee | Nov/2015 – Fev/2016</p>
+            <p>• Orientação e suporte a alunos no uso de ferramentas de informática.</p>
+            <p>• Apoio no aprendizado de Word, Excel, PowerPoint e Access.</p>
+            <p>• Auxílio na manutenção, configuração de computadores e resolução de problemas.</p>
+
+            <div class="terminal-espaco"></div>
+
+            <p class="terminal-subtitulo">RESUMO PROFISSIONAL</p>
+            <p>Experiência em suporte técnico, desenvolvimento web, manutenção de equipamentos, utilização de sistemas e resolução de problemas. Em constante evolução na área de tecnologia, com foco em desenvolvimento de software e aprimoramento das habilidades técnicas.</p>
+        `);
+
+        break;
+
+        case "objetivo":
+            mostrarSecaoTerminal(
+                "OBJETIVO PROFISSIONAL",
+                `
+                    <p>
+                        Desenvolver minha carreira na área de tecnologia,
+                        ampliando meus conhecimentos em programação e
+                        desenvolvimento de software.
+                    </p>
+
+                    <p class="terminal-paragrafo">
+                        Busco oportunidades para aplicar meus conhecimentos
+                        em projetos práticos, aprender novas tecnologias
+                        e contribuir com organização, raciocínio lógico
+                        e resolução de problemas.
+                    </p>
+                `
+            );
+            break;
+
+        case "clear":
+        case "limpar":
+            historicoTerminal.innerHTML = "";
+            break;
+
+        default:
+            mostrarTextoTerminal(
+                'Comando não encontrado: "' + comando +
+                '". Digite "help" para consultar os comandos.',
+                "erro-terminal"
+            );
+            break;
+    }
+
+    // Mantém a linha de entrada no final do terminal.
+    const linhaTerminal = document.querySelector(".terminal-linha");
+
+    if (linhaTerminal) {
+        terminalConteudo.appendChild(linhaTerminal);
+    }
+
+    terminalInput.value = "";
+    terminalInput.focus({ preventScroll: true });
 });
 
 const statusModulo = document.querySelector("#statusModulo");
@@ -461,16 +586,16 @@ btnAcesso.addEventListener("click", function() {
 
     }, 7000);
 
-    setTimeout(function() {
-
+    
+setTimeout(function() {
     statusModulo.textContent =
-            "Carregando módulo Contato. . .";
+        "Carregando módulo Contato. . .";
 
-    statusSistema.textContent =
-    "● SYSTEM ONLINE";
+}, 9000);
 
-    statusModulo.textContent =
-    "";
+setTimeout(function() {
+    statusSistema.textContent = "● SYSTEM ONLINE";
+    statusModulo.textContent = "";
 
     document.querySelector("#acessoPermitido").style.display = "block";
 
@@ -488,13 +613,10 @@ btnAcesso.addEventListener("click", function() {
         porcentagemAcesso.style.visibility = "hidden";
     }, 500);
 
-
-        if (porcentagemAcesso.textContent === "100%") {
-
+    if (porcentagemAcesso.textContent === "100%") {
         acessoLiberado = true;
 
         const body = document.querySelector("body");
-
         body.classList.add("acesso-liberado");
 
         console.log("ACESSO LIBERADO!");
@@ -507,27 +629,24 @@ btnAcesso.addEventListener("click", function() {
             secao.classList.add("secao-animada");
         });
 
-        const observadorSecoes = new IntersectionObserver(function(entradas) {
-
-            entradas.forEach(function(entrada) {
-
-                if (entrada.isIntersecting) {
-                    entrada.target.classList.add("visivel");
-                }
-
-            });
-
-        }, {
-            threshold: 0.2
-        });
+        const observadorSecoes = new IntersectionObserver(
+            function(entradas) {
+                entradas.forEach(function(entrada) {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add("visivel");
+                    }
+                });
+            },
+            {
+                threshold: 0.2
+            }
+        );
 
         secoes.forEach(function(secao) {
             observadorSecoes.observe(secao);
         });
-
     }
-
-}, 9000);
+}, 9500);
 
 });
 
@@ -565,3 +684,4 @@ btnConexao.addEventListener("click", function() {
 }, 30);
 
 });
+

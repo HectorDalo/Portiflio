@@ -685,6 +685,57 @@ footer {
     font-size: 15px;
 }
 
+/* Organização das respostas do currículo no terminal */
+.bloco-terminal {
+    margin: 18px 0;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.terminal-cabecalho-resposta {
+    color: #00eaff;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.terminal-separador {
+    color: #245b63;
+    margin-bottom: 14px;
+    overflow: hidden;
+}
+
+.terminal-corpo-resposta p {
+    margin: 7px 0;
+}
+
+.terminal-corpo-resposta strong {
+    color: #00eaff;
+    font-weight: 600;
+}
+
+.terminal-paragrafo {
+    margin-top: 14px !important;
+    line-height: 1.9;
+}
+
+.terminal-subtitulo {
+    color: #00eaff;
+    font-weight: bold;
+    margin-top: 18px !important;
+    letter-spacing: 0.5px;
+}
+
+.terminal-tecnologias {
+    color: #9ab7bd;
+    font-size: 0.9rem;
+}
+
+.terminal-espaco {
+    height: 14px;
+}
+
 .conexao {
     max-width: 600px;
     margin: 0 auto;
