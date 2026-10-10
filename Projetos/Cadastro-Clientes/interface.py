@@ -1,79 +1,125 @@
+import re
 import tkinter as tk
 from tkinter import messagebox
-import json
-import main
-import re
 
+import main
+
+
+# Índice do cliente que está sendo editado.
 cliente_editando = None
 
-def formatar_telefone(event):
-    telefone = telefone_entry.get()
 
-    numeros = re.sub(r"\D", "", telefone)
-    if len(numeros) > 11:
-        numeros = numeros[:11]
+def formatar_telefone(event=None):
+    """Formata o telefone enquanto o usuário digita."""
+    texto = telefone_entry.get()
+    numeros = re.sub(r"\D", "", texto)[:11]
 
     if len(numeros) == 0:
-        telefone_formatado = ""
-    elif len(numeros) <= 2 :
-        telefone_formatado = "(" + numeros
-    elif len(numeros) <= 7:
-        telefone_formatado = "(" + numeros[:2] + ") " + numeros[2:]
+        formatado = ""
+    elif len(numeros) <= 2:
+        formatado = f"({numeros}"
+    elif len(numeros) <= 6:
+        formatado = f"({numeros[:2]}) {numeros[2:]}"
+    elif len(numeros) <= 10:
+        formatado = f"({numeros[:2]}) {numeros[2:6]}-{numeros[6:]}"
     else:
-        telefone_formatado = "(" + numeros[:2] + ") " + numeros[2:7] + "-" + numeros[7:]
+        formatado = f"({numeros[:2]}) {numeros[2:7]}-{numeros[7:]}"
 
     telefone_entry.delete(0, tk.END)
-    telefone_entry.insert(0, telefone_formatado)
+    telefone_entry.insert(0, formatado)
     telefone_entry.icursor(tk.END)
 
-def salvar_edicao():
-    global cliente_editando
 
-    if cliente_editando is None:
-        return
-
-    cliente = main.clientes[cliente_editando]
-
-    novo_nome = nome_entry.get()
-    novo_telefone = telefone_entry.get()
-
-    if len(novo_telefone) !=15:
-        messagebox.showwarning(
-            "Edição",
-            "Digite um telefone válido!"
-        )
-        return
-
-    if novo_nome == "":
-        messagebox.showwarning("Edição", "O nome não pode ficar vazio.")
-        return
-
-    if novo_telefone == "":
-        messagebox.showwarning("Edição", "O telefone não pode ficar vazio.")
-        return
-
-    for i, outro_cliente in enumerate(main.clientes):
-        if i != cliente_editando and outro_cliente[0] == novo_nome:
-            messagebox.showwarning("Edição", "Já existe um cliente com esse nome.")
-            return
-
-    cliente[0] = novo_nome
-    cliente[1] = novo_telefone
-
-    with open("clientes.json", "w") as arquivo:
-        json.dump(main.clientes, arquivo)
-
-    messagebox.showinfo("Salvar", "Cliente salvo!")
-
+def atualizar_lista():
     clientes_lista.delete(0, tk.END)
 
-    for cliente in main.clientes:
-        clientes_lista.insert(tk.END, cliente[0] + " - " + cliente[1])
+    largura = 48
 
+    for nome, telefone in main.clientes:
+        texto = f"{nome} - {telefone}"
+        clientes_lista.insert(tk.END, texto.center(largura))
+
+
+def limpar_campos():
+    """Limpa os campos do formulário."""
     nome_entry.delete(0, tk.END)
     telefone_entry.delete(0, tk.END)
 
+
+def cancelar_edicao():
+    """Cancela a edição em andamento."""
+    global cliente_editando
+
     cliente_editando = None
+    limpar_campos()
+    clientes_lista.selection_clear(0, tk.END)
+
+
+def cadastrar():
+    nome = nome_entry.get().strip()
+    telefone = telefone_entry.get().strip()
+
+    if not nome:
+        messagebox.showwarning(
+            "Cadastro",
+            "Digite o nome do cliente."
+        )
+        nome_entry.focus_set()
+        return
+
+    if not main.telefone_valido(telefone):
+        messagebox.showwarning(
+            "Cadastro",
+            "Digite um telefone válido com DDD (10 ou 11 dígitos)."
+        )
+        telefone_entry.focus_set()
+        return
+
+    # Verifica se o nome já existe.
+    for cliente in main.clientes:
+        if cliente[0].strip().casefold() == nome.casefold():
+            messagebox.showerror(
+                "Cliente duplicado",
+                "Já existe um cliente com esse nome."
+            )
+            nome_entry.focus_set()
+            return
+
+    # Verifica se o telefone já existe.
+    telefone_numeros = "".join(
+        caractere for caractere in telefone
+        if caractere.isdigit()
+    )
+
+    for cliente in main.clientes:
+        telefone_existente = "".join(
+            caractere for caractere in cliente[1]
+            if caractere.isdigit()
+        )
+
+        if telefone_existente == telefone_numeros:
+            messagebox.showerror(
+                "Telefone duplicado",
+                "Esse telefone já está cadastrado."
+            )
+            telefone_entry.focus_set()
+            return
+
+    if main.cadastrar_cliente(nome, telefone):
+        atualizar_lista()
+        limpar_campos()
+
+        messagebox.showinfo(
+            "Cadastro",
+            "Cliente cadastrado com sucesso!"
+        )
+    else:
+        messagebox.showerror(
+            "Erro no cadastro",
+            "Não foi possível cadastrar o cliente. Verifique os dados e tente novamente."
+        )
+
+
 
 def editar():
     global cliente_editando
@@ -81,315 +127,318 @@ def editar():
     selecionado = clientes_lista.curselection()
 
     if not selecionado:
+        messagebox.showwarning(
+            "Edição", "Selecione um cliente na lista."
+        )
         return
 
-    indice = selecionado[0]
+    cliente_editando = selecionado[0]
+    cliente = main.clientes[cliente_editando]
 
-    cliente_editando = indice
+    limpar_campos()
 
-    cliente = main.clientes[indice]
-
-    nome_entry.delete(0, tk.END)
     nome_entry.insert(0, cliente[0])
-
-    telefone_entry.delete(0, tk.END)
     telefone_entry.insert(0, cliente[1])
 
-    print("Cliente", indice, "selecionado")
+    nome_entry.focus_set()
+
+
+def salvar_edicao():
+    global cliente_editando
+
+    if cliente_editando is None:
+        messagebox.showwarning(
+            "Edição",
+            "Selecione um cliente para editar."
+        )
+        return
+
+    if cliente_editando >= len(main.clientes):
+        messagebox.showerror(
+            "Edição",
+            "Não foi possível localizar o cliente selecionado."
+        )
+        cancelar_edicao()
+        atualizar_lista()
+        return
+
+    nome_original = main.clientes[cliente_editando][0]
+    novo_nome = nome_entry.get().strip()
+    novo_telefone = telefone_entry.get().strip()
+
+    if not novo_nome:
+        messagebox.showwarning(
+            "Edição",
+            "Digite o nome do cliente."
+        )
+        nome_entry.focus_set()
+        return
+
+    if not main.telefone_valido(novo_telefone):
+        messagebox.showwarning(
+            "Edição",
+            "Digite um telefone válido com DDD (10 ou 11 dígitos)."
+        )
+        telefone_entry.focus_set()
+        return
+
+    # Verifica duplicidades em outros clientes.
+    telefone_numeros = "".join(
+        c for c in novo_telefone if c.isdigit()
+    )
+
+    for i, cliente in enumerate(main.clientes):
+        if i == cliente_editando:
+            continue
+
+        if cliente[0].strip().casefold() == novo_nome.casefold():
+            messagebox.showerror(
+                "Nome duplicado",
+                "Outro cliente já possui esse nome."
+            )
+            nome_entry.focus_set()
+            return
+
+        telefone_existente = "".join(
+            c for c in cliente[1] if c.isdigit()
+        )
+
+        if telefone_existente == telefone_numeros:
+            messagebox.showerror(
+                "Telefone duplicado",
+                "Esse telefone pertence a outro cliente."
+            )
+            telefone_entry.focus_set()
+            return
+
+    if main.editar_cliente(nome_original, novo_nome, novo_telefone):
+        atualizar_lista()
+        cancelar_edicao()
+
+        messagebox.showinfo(
+            "Edição",
+            "Cliente atualizado com sucesso!"
+        )
+    else:
+        messagebox.showerror(
+            "Erro na edição",
+            "Não foi possível atualizar o cliente. Verifique os dados."
+        )
+
+
 
 def excluir():
     selecionado = clientes_lista.curselection()
 
     if not selecionado:
-        return
-
-    item_selecionado = clientes_lista.get(selecionado[0])
-
-    print("selecionado", item_selecionado)
-
-    nome_excluir = item_selecionado.split(" - ")[0]
-
-    print("nome para excluir: ", nome_excluir)
-
-    for cliente in main.clientes:
-        if cliente[0] == nome_excluir:
-            print("Cliente", cliente ,"encontrado")
-
-            main.clientes.remove(cliente)
-
-            with open("clientes.json", "w") as arquivo:
-                json.dump(main.clientes, arquivo)
-
-            clientes_lista.delete(0, tk.END)
-
-            for cliente in main.clientes:
-                clientes_lista.insert(tk.END, cliente[0] + " - " + cliente[1])
-
-            print("Cliente excluido")
-            messagebox.showinfo("Exclusão", "Cliente excluido!")
-
-            break
-
-def cadastrar():
-    nome = nome_entry.get()
-    telefone = telefone_entry.get()
-
-    if nome == "":
-        messagebox.showinfo("Cadastro", "Digite o nome do cliente!")
-        return
-
-    if telefone == "":
-        messagebox.showinfo("Cadastro", "Digite o telefone do cliente!")
-        return
-
-    if len(telefone) != 15:
         messagebox.showwarning(
-            "Cadastro",
-            "Digite um número válido"
+            "Exclusão", "Selecione um cliente na lista."
         )
         return
 
-    if any(cliente[0] == nome for cliente in main.clientes):
-        messagebox.showwarning("Cadastro", "Cliente já cadastrado.")
+    indice = selecionado[0]
+    nome = main.clientes[indice][0]
+
+    confirmar = messagebox.askyesno(
+        "Confirmar exclusão",
+        f"Deseja realmente excluir o cliente {nome}?",
+    )
+
+    if not confirmar:
         return
 
-    main.cadastrar_cliente(nome, telefone)
+    if main.excluir_cliente(nome):
+        atualizar_lista()
+        cancelar_edicao()
+        resultado_pesquisa.config(text="")
+        messagebox.showinfo(
+            "Exclusão", "Cliente excluído com sucesso!"
+        )
 
-    clientes_lista.insert(tk.END,nome + " - " + telefone)
-
-    messagebox.showinfo("Cadastrado", "Cliente cadastrado")
-
-    nome_entry.delete(0, tk.END)
-    telefone_entry.delete(0, tk.END)
 
 def pesquisar():
-    nome_pesquisar = pesquisa_entry.get()
+    nome = pesquisa_entry.get().strip()
 
-    for cliente in main.clientes:
-        if cliente[0] == nome_pesquisar:
-            resultado_pesquisa.config(
-                text="Cliente encontrado: "+ cliente[0] + " - " + cliente[1]
-            )
-            messagebox.showinfo(
-                "pesquisa",
-                "Cliente encontrado: " + cliente[0] + " - " + cliente[1]
+    if not nome:
+        messagebox.showwarning(
+            "Pesquisa", "Digite o nome do cliente."
         )
+        pesquisa_entry.focus_set()
+        return
 
-            print("Cliente encontrado", cliente)
-            pesquisa_entry.delete(0, tk.END)
-            return
+    cliente = main.pesquisar_cliente(nome)
 
-    resultado_pesquisa.config(text="Cliente não encontrado")
+    if cliente:
+        mensagem = f"Cliente encontrado: {cliente[0]} - {cliente[1]}"
+        resultado_pesquisa.config(text=mensagem)
+    else:
+        resultado_pesquisa.config(text="Cliente não encontrado.")
 
-    messagebox.showinfo(
-        "pesquisa",
-        "Cliente não encontrado!"
-    )
+def limpar_pesquisa():
     pesquisa_entry.delete(0, tk.END)
+    resultado_pesquisa.config(text="")
+    pesquisa_entry.focus_set()
 
-    print("Cliente não encontrado")
 
+# Configuração da janela principal.
 janela = tk.Tk()
-
-janela.title("Cadastro de Clientes")
-janela.geometry("500x500")
+janela.title("Sistema de Cadastro de Clientes")
+janela.geometry("540x700")
+janela.minsize(500, 650)
 janela.configure(bg="#050505")
 
+
+# Estilos reutilizados.
+FUNDO = "#050505"
+FUNDO_CAMPO = "#111111"
+CIANO = "#00eaff"
+BRANCO = "#ffffff"
+
+
+def criar_label(texto):
+    return tk.Label(
+        janela,
+        text=texto,
+        fg=BRANCO,
+        bg=FUNDO,
+        font=("Arial", 10),
+    )
+
+
+def criar_botao(pai, texto, comando):
+    return tk.Button(
+        pai,
+        text=texto,
+        command=comando,
+        width=17,
+        bg=FUNDO_CAMPO,
+        fg=CIANO,
+        activebackground=CIANO,
+        activeforeground=FUNDO,
+        relief="flat",
+        bd=0,
+        cursor="hand2",
+        font=("Arial", 9, "bold"),
+        pady=7,
+    )
+
+
+def criar_campo():
+    return tk.Entry(
+        janela,
+        width=42,
+        bg=FUNDO_CAMPO,
+        fg=BRANCO,
+        insertbackground=BRANCO,
+        relief="flat",
+        bd=0,
+        justify="center",
+        font=("Arial", 10),
+    )
+
+
+# Título.
 titulo = tk.Label(
     janela,
     text="Cadastro de Clientes",
-    font=("Arial", 20,  "bold"),
-    fg="#00eaff",
-    bg="#050505"
-
+    font=("Arial", 20, "bold"),
+    fg=CIANO,
+    bg=FUNDO,
 )
-titulo.pack(pady=(15, 20))
+titulo.pack(pady=(20, 18))
 
-nome_label = tk.Label(
-    janela,
-    text="Nome: ",
-    fg="white",
-    bg="#050505"
-)
-nome_label.pack(pady=5)
 
-nome_entry = tk.Entry(
-    janela,
-    width=40,
-    fg="white",
-    bg="#111111",
-    insertbackground="white",
-    relief="flat",
-    bd=0,
-    justify="center"
-)
-nome_entry.pack(pady=5)
+# Formulário de cadastro e edição.
+criar_label("Nome completo").pack(pady=(3, 5))
+nome_entry = criar_campo()
+nome_entry.pack(ipady=7, pady=(0, 10))
 
-telefone_label = tk.Label(
-    janela,
-    text="Telefone: ",
-    fg="white",
-    bg="#050505"
-    )
-telefone_label.pack(pady=5)
-
-telefone_entry = tk.Entry(
-    janela,
-    width=40,
-    bg="#111111",
-    fg="white",
-    insertbackground="white",
-    relief="flat",
-    bd=0,
-    justify="center"
-)
-
+criar_label("Telefone com DDD").pack(pady=(3, 5))
+telefone_entry = criar_campo()
+telefone_entry.pack(ipady=7, pady=(0, 12))
 telefone_entry.bind("<KeyRelease>", formatar_telefone)
-telefone_entry.pack(pady=5)
 
 
-frame_botoes = tk.Frame(
-    janela,
-    bg="#050505",
+# Botões de cadastro e edição.
+frame_botoes = tk.Frame(janela, bg=FUNDO)
+frame_botoes.pack(pady=3)
+
+criar_botao(frame_botoes, "Cadastrar", cadastrar).grid(
+    row=0, column=0, padx=4, pady=4
 )
-frame_botoes.pack()
-
-botao_cadastrar = tk.Button(
-    frame_botoes,
-    text="Cadastrar",
-    command=cadastrar,
-    width=20,
-    bg="#111111",
-    fg="#00eaff",
-    activebackground="#00eaff",
-    activeforeground="#050505",
-    relief="flat",
-    bd=0
+criar_botao(frame_botoes, "Editar selecionado", editar).grid(
+    row=0, column=1, padx=4, pady=4
 )
-botao_cadastrar.pack(side="left", padx=5, pady=5)
 
-botao_editar = tk.Button(
-    frame_botoes,
-    text="Editar",
-    command=editar,
-    width=20,
-    bg="#111111",
-    fg="#00eaff",
-    activebackground="#00eaff",
-    activeforeground="#050505",
-    relief="flat",
-    bd=0
-)
-botao_editar.pack(side="left", padx=5, pady=5)
+frame_botoes2 = tk.Frame(janela, bg=FUNDO)
+frame_botoes2.pack(pady=2)
 
-frame_botoes2 = tk.Frame(
-    janela,
-    bg="#050505",
-)
-frame_botoes2.pack()
+criar_botao(
+    frame_botoes2, "Salvar edição", salvar_edicao
+).grid(row=0, column=0, padx=4, pady=4)
 
-botao_salvar = tk.Button(
-     frame_botoes2,
-    text="Salvar Edição",
-    command=salvar_edicao,
-    width=20,
-    bg="#111111",
-    fg="#00eaff",
-    activebackground="#00eaff",
-    activeforeground="#050505",
-    relief="flat",
-    bd=0
-)
-botao_salvar.pack(side="left", padx=5, pady=5)
+criar_botao(
+    frame_botoes2, "Excluir selecionado", excluir
+).grid(row=0, column=1, padx=4, pady=4)
 
-botao_excluir = tk.Button(
-    frame_botoes2,
-    text="Excluir",
-    command=excluir,
-    width=20,
-    bg="#111111",
-    fg="#00eaff",
-    activebackground="#00eaff",
-    activeforeground="#050505",
-    relief="flat",
-    bd=0
-)
-botao_excluir.pack(side="left", padx=5, pady=5)
 
-frame_pesquisar = tk.Frame(
-    janela,
-    bg="#050505",
-)
-frame_pesquisar.pack()
+# Lista de clientes.
+criar_label("Clientes cadastrados").pack(pady=(16, 5))
 
-botao_pesquisar = tk.Button(
-    frame_pesquisar,
-    text="Pesquisar",
-    command=pesquisar,
-    width=20,
-    bg="#111111",
-    fg="#00eaff",
-    activebackground="#00eaff",
-    activeforeground="#050505",
-    relief="flat",
-    bd=0
-)
-botao_pesquisar.pack(pady=5)
+frame_lista = tk.Frame(janela, bg=FUNDO)
+frame_lista.pack(padx=20, fill="x")
 
-cliente_label = tk.Label(
-    janela,
-    text="Clientes cadastrados",
-    fg="white",
-    bg="#050505"
-)
-cliente_label.pack(pady=5)
+barra_rolagem = tk.Scrollbar(frame_lista)
+barra_rolagem.pack(side="right", fill="y")
 
 clientes_lista = tk.Listbox(
-    janela,
-    width=50,
-    height=4,
-    bg="#111111",
-    fg="white",
-    selectbackground="#00eaff",
-    selectforeground="#050505",
+    frame_lista,
+    justify= "center",
+    height=7,
+    bg=FUNDO_CAMPO,
+    fg=BRANCO,
+    selectbackground=CIANO,
+    selectforeground=FUNDO,
     relief="flat",
     bd=0,
-    justify="center"
-
-)
-clientes_lista.pack(pady=5)
-
-pesquisa_label = tk.Label(
-    janela,
-    text="Pesquisa cliente",
-    fg="white",
-    bg="#050505",
-    justify="center"
-)
-pesquisa_label.pack(pady=5)
-
-pesquisa_entry = tk.Entry(
-    janela,
-    width=40,
-    bg="#111111",
-    fg="white",
-    insertbackground="white",
-    relief="flat",
-    bd=0,
-    justify="center"
+    font=("Consolas", 10),
+    yscrollcommand=barra_rolagem.set,
+    exportselection=False,
 )
 
-pesquisa_entry.pack(pady=5)
+clientes_lista.pack(side="left", fill="both", expand=True)
+barra_rolagem.config(command=clientes_lista.yview)
+
+
+# Pesquisa de clientes.
+criar_label("Pesquisar cliente pelo nome").pack(pady=(15, 5))
+
+pesquisa_entry = criar_campo()
+pesquisa_entry.pack(ipady=7, pady=(0, 5))
+
+frame_pesquisa_botoes = tk.Frame(janela, bg=FUNDO)
+frame_pesquisa_botoes.pack(pady=5)
+
+criar_botao(
+    frame_pesquisa_botoes, "Pesquisar", pesquisar
+).grid(row=0, column=0, padx=4)
+
+criar_botao(
+    frame_pesquisa_botoes, "Limpar pesquisa", limpar_pesquisa
+).grid(row=0, column=1, padx=4)
 
 resultado_pesquisa = tk.Label(
     janela,
     text="",
-    fg="white",
-    bg="#050505"
+    fg=CIANO,
+    bg=FUNDO,
+    font=("Arial", 9),
+    wraplength=480,
 )
 resultado_pesquisa.pack(pady=5)
 
-for cliente in main.clientes:
-    clientes_lista.insert(tk.END, cliente[0] + " - " + cliente[1])
+
+# Carrega os registros salvos ao abrir a janela.
+atualizar_lista()
 
 janela.mainloop()
