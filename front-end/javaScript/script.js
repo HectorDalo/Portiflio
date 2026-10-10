@@ -1,5 +1,6 @@
 let conexaoEstabelecida = false;
 let acessoLiberado = false;
+let acessoEmAndamento = false;
 
 const statusSistema = document.querySelector(".status-sistema");
 
@@ -542,6 +543,14 @@ const porcentagemAcesso = document.querySelector("#porcentagemAcesso");
 
 btnAcesso.addEventListener("click", function() {
 
+    if (acessoEmAndamento || acessoLiberado) {
+        return;
+    }
+
+    acessoEmAndamento = true;
+    btnAcesso.disabled = true;
+    btnAcesso.style.display = "none";
+
     let progresso = 0;
 
     const animacaoProgresso = setInterval(function() {
@@ -599,12 +608,7 @@ setTimeout(function() {
 
     document.querySelector("#acessoPermitido").style.display = "block";
 
-    btnAcesso.style.opacity = "0";
-    btnAcesso.style.transform = "translateY(-10px)";
-
-    setTimeout(function() {
-        btnAcesso.style.visibility = "hidden";
-    }, 500);
+    btnAcesso.style.display = "none";
 
     porcentagemAcesso.style.opacity = "0";
     porcentagemAcesso.style.transform = "translateY(-10px)";

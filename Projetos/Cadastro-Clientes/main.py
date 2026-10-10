@@ -80,8 +80,12 @@ def pesquisar_cliente():
 
 print(os.path.abspath("clientes.json"))
 
-with open("clientes.json", "r") as arquivo:
-    clientes = json.load(arquivo)
+try:
+    with open("clientes.json", "r", encoding="utf-8") as arquivo:
+        clientes = json.load(arquivo)
+
+except FileNotFoundError:
+    clientes = []
 
 if __name__ == "__main__":
     print("Sistema de Cadastro de Clientes")
